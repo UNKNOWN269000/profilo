@@ -1,206 +1,349 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Jaseem Nizardeen — Web Developer</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#05050d" />
+  <meta name="description" content="Jaseem Nizardeen is a web developer building precise web experiences, automation systems, and data-powered applications." />
+  <title>Jaseem Nizardeen // Web Developer</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
 
-  <!-- 3D WebGL canvas (fixed behind everything) -->
-  <canvas id="webgl"></canvas>
+  <div class="boot-screen" id="boot-screen" aria-hidden="true">
+    <div class="boot-mark">
+      <span class="boot-mark__core">JN</span>
+      <span class="boot-mark__orbit"></span>
+    </div>
+    <p>INITIALIZING PORTFOLIO OS</p>
+    <div class="boot-track"><span id="boot-progress"></span></div>
+    <div class="boot-meta"><span>CORE/WEBGL</span><span id="boot-value">000%</span></div>
+  </div>
 
-  <!-- Scanline / grid overlays -->
-  <div class="overlay-grid"></div>
-  <div class="overlay-scanlines"></div>
-  <div class="overlay-vignette"></div>
+  <canvas id="webgl" aria-label="Interactive three-dimensional digital globe"></canvas>
+  <div class="webgl-fallback" aria-hidden="true"></div>
+  <div class="grid-overlay" aria-hidden="true"></div>
+  <div class="scan-overlay" aria-hidden="true"></div>
+  <div class="noise-overlay" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
 
-  <!-- Loader -->
-  <div id="loader">
-    <div class="loader-inner">
-      <div class="loader-ring"></div>
-      <div class="loader-text" data-text="INITIALIZING">INITIALIZING</div>
-      <div class="loader-bar"><span id="loader-progress"></span></div>
+  <div class="cursor-hud" id="cursor-hud" aria-hidden="true">
+    <div class="cursor-hud__reticle">
+      <span class="reticle-ring"></span>
+      <span class="reticle-x"></span>
+      <span class="reticle-y"></span>
+      <span class="reticle-core"></span>
+    </div>
+    <div class="cursor-hud__label">
+      <span id="cursor-x">X 0000</span>
+      <span id="cursor-y">Y 0000</span>
     </div>
   </div>
 
-  <!-- HUD corners -->
-  <div class="hud hud-tl"><span class="hud-dot"></span> SYS.ONLINE</div>
-  <div class="hud hud-tr" id="hud-clock">00:00:00</div>
-  <div class="hud hud-bl" id="hud-scroll">SCROLL 000%</div>
-  <div class="hud hud-br">V.2026.8 // LK-COLOMBO</div>
+  <aside class="telemetry telemetry--left" aria-hidden="true">
+    <div class="telemetry__line"></div>
+    <span>SYS.ONLINE</span>
+    <span class="status-pulse"></span>
+  </aside>
+  <aside class="telemetry telemetry--right" aria-hidden="true">
+    <div class="telemetry-axis">
+      <span>PTCH</span><b id="pitch-value">+00.0</b>
+      <i><em id="pitch-bar"></em></i>
+    </div>
+    <div class="telemetry-axis">
+      <span>YAW</span><b id="yaw-value">+00.0</b>
+      <i><em id="yaw-bar"></em></i>
+    </div>
+  </aside>
 
-  <!-- Nav -->
-  <nav id="nav">
-    <div class="nav-logo glitch" data-text="JN//DEV">JN//DEV</div>
-    <ul class="nav-links">
-      <li><a href="#hero" class="nav-link">01.HOME</a></li>
-      <li><a href="#about" class="nav-link">02.ABOUT</a></li>
-      <li><a href="#skills" class="nav-link">03.SKILLS</a></li>
-      <li><a href="#services" class="nav-link">04.SERVICES</a></li>
-      <li><a href="#contact" class="nav-link">05.CONTACT</a></li>
-    </ul>
+  <div class="corner-data corner-data--bl" aria-hidden="true">
+    <span id="scroll-readout">SCROLL // 000%</span>
+    <span>LAT 06.9271° N</span>
+  </div>
+  <div class="corner-data corner-data--br" aria-hidden="true">
+    <span id="system-clock">00:00:00 UTC</span>
+    <span>LK // COLOMBO</span>
+  </div>
+  <div class="scroll-progress" aria-hidden="true"><span id="scroll-progress"></span></div>
+
+  <header class="site-header" id="site-header">
+    <a class="brand" href="#home" aria-label="Jaseem Nizardeen, home">
+      <span class="brand__sigil">JN</span>
+      <span class="brand__copy"><b>JASEEM.N</b><small>DEVELOPMENT UNIT</small></span>
+    </a>
+
+    <nav class="desktop-nav" aria-label="Primary navigation">
+      <a href="#home" data-section="home"><span>00</span> Index</a>
+      <a href="#capabilities" data-section="capabilities"><span>01</span> Capabilities</a>
+      <a href="#work" data-section="work"><span>02</span> Work</a>
+      <a href="#contact" data-section="contact"><span>03</span> Contact</a>
+    </nav>
+
+    <div class="header-status">
+      <span class="status-pulse"></span>
+      <span><b>SYSTEM</b> OPERATIONAL</span>
+    </div>
+
+    <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open navigation">
+      <span></span><span></span>
+    </button>
+  </header>
+
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
+    <a href="#home"><span>00 //</span> INDEX</a>
+    <a href="#capabilities"><span>01 //</span> CAPABILITIES</a>
+    <a href="#work"><span>02 //</span> SELECTED WORK</a>
+    <a href="#contact"><span>03 //</span> CONTACT</a>
+    <p>JASEEM NIZARDEEN © 2026</p>
   </nav>
 
-  <!-- Scroll progress rail -->
-  <div class="progress-rail"><div id="progress-fill"></div></div>
-
-  <main id="content">
-
-    <!-- ============ HERO ============ -->
-    <section class="section hero" id="hero">
-      <div class="hero-inner">
-        <div class="hero-tag reveal">// PERSONAL PROFILE SYSTEM v2.0</div>
-        <h1 class="hero-name">
-          <span class="line"><span class="glitch big" data-text="JASEEM">JASEEM</span></span>
-          <span class="line"><span class="glitch big accent" data-text="NIZARDEEN">NIZARDEEN</span></span>
+  <main id="main-content">
+    <section class="hero panel-section" id="home" data-scene="hero">
+      <div class="hero__copy">
+        <p class="eyebrow reveal-item"><span></span> PERSONAL PORTFOLIO // 2026</p>
+        <h1 class="hero__title" aria-label="Jaseem Nizardeen, Web Developer">
+          <span class="title-line"><span>JASEEM</span></span>
+          <span class="title-line title-line--outline"><span>NIZARDEEN</span></span>
         </h1>
-        <div class="hero-role reveal">
-          <span class="bracket">[</span>
-          <span id="typed"></span><span class="cursor">▌</span>
-          <span class="bracket">]</span>
+        <div class="hero__role reveal-item">
+          <span class="role-slash">//</span>
+          <span id="typed-role">WEB DEVELOPER</span>
+          <span class="type-cursor"></span>
         </div>
-        <p class="hero-sub reveal">Building the web — pages, apps &amp; automation.<br/>Scroll to enter the system.</p>
-        <div class="hero-cta reveal">
-          <a href="#about" class="btn btn-primary">ENTER SYSTEM ▸</a>
-          <a href="#contact" class="btn btn-ghost">CONTACT ME</a>
+        <p class="hero__intro reveal-item">I engineer responsive interfaces, connected applications, and automation systems that turn complex workflows into precise digital experiences.</p>
+        <div class="hero__actions reveal-item">
+          <a class="hud-button hud-button--solid magnetic" href="#work">
+            <span>Explore transmissions</span><i data-lucide="arrow-down-right"></i>
+          </a>
+          <a class="hud-button hud-button--ghost magnetic" href="#contact">
+            <span>Initiate contact</span><i data-lucide="radio"></i>
+          </a>
+        </div>
+        <ul class="hero__badges reveal-item" aria-label="Core skills">
+          <li>REACT</li><li>TYPESCRIPT</li><li>AUTOMATION</li><li>SQL</li>
+        </ul>
+      </div>
+
+      <div class="globe-labels" aria-hidden="true">
+        <div class="globe-tag globe-tag--one">
+          <span>PRIMARY NODE</span><b>LK.CMB_006</b>
+        </div>
+        <div class="globe-tag globe-tag--two">
+          <span>NETWORK STATUS</span><b>07 NODES ACTIVE</b>
+        </div>
+        <div class="globe-index">
+          <span>GEO.SPHERE</span><b>01</b>
         </div>
       </div>
-      <div class="scroll-hint">
-        <div class="mouse"><div class="wheel"></div></div>
-        <span>SCROLL</span>
+
+      <div class="hero__foot reveal-item" aria-hidden="true">
+        <div class="scroll-cue"><span></span><small>SCROLL TO NAVIGATE</small></div>
+        <p><b>AVAILABLE</b> FOR SELECT PROJECTS</p>
       </div>
     </section>
 
-    <!-- ============ ABOUT ============ -->
-    <section class="section" id="about">
-      <div class="section-head">
-        <span class="sec-num">02</span>
-        <h2 class="sec-title glitch" data-text="ABOUT.ME">ABOUT.ME</h2>
-        <div class="sec-line"></div>
+    <section class="capabilities panel-section" id="capabilities" data-scene="capabilities">
+      <div class="section-shell section-shell--right">
+        <header class="section-heading reveal-group">
+          <div class="section-kicker"><span>01</span> SYSTEM CAPABILITIES</div>
+          <h2>TECH <em>STACK</em><br />DIAGNOSTICS</h2>
+          <p>A focused toolkit for building performant products, dependable data layers, and workflow automation.</p>
+        </header>
+
+        <div class="diagnostic-grid">
+          <article class="diagnostic-card tilt-card reveal-card">
+            <div class="diagnostic-card__top">
+              <span class="module-icon"><i data-lucide="code-2"></i></span>
+              <span class="module-id">MODULE / 01</span>
+              <span class="module-state">READY</span>
+            </div>
+            <h3>Web Development</h3>
+            <p>Interfaces engineered for clarity, speed, and every screen.</p>
+            <ul class="skill-list">
+              <li><span>HTML5</span><b>SEMANTIC</b></li>
+              <li><span>CSS3</span><b>RESPONSIVE</b></li>
+              <li><span>JavaScript</span><b>ES NEXT</b></li>
+              <li><span>TypeScript</span><b>TYPED</b></li>
+              <li><span>React</span><b>COMPONENTS</b></li>
+            </ul>
+            <div class="module-meter"><span style="--level: 94%"></span></div>
+          </article>
+
+          <article class="diagnostic-card tilt-card reveal-card">
+            <div class="diagnostic-card__top">
+              <span class="module-icon module-icon--magenta"><i data-lucide="workflow"></i></span>
+              <span class="module-id">MODULE / 02</span>
+              <span class="module-state">READY</span>
+            </div>
+            <h3>Automation &amp; Scripts</h3>
+            <p>Quiet systems that remove repetition and keep work moving.</p>
+            <ul class="skill-list">
+              <li><span>Google Apps Script</span><b>CLOUD</b></li>
+              <li><span>VBA</span><b>OFFICE</b></li>
+              <li><span>Workflow Design</span><b>LOGIC</b></li>
+            </ul>
+            <div class="module-meter module-meter--magenta"><span style="--level: 89%"></span></div>
+          </article>
+
+          <article class="diagnostic-card tilt-card reveal-card">
+            <div class="diagnostic-card__top">
+              <span class="module-icon"><i data-lucide="database-zap"></i></span>
+              <span class="module-id">MODULE / 03</span>
+              <span class="module-state">READY</span>
+            </div>
+            <h3>Data &amp; Backend</h3>
+            <p>Structured information, useful queries, and connected logic.</p>
+            <ul class="skill-list">
+              <li><span>SQL</span><b>RELATIONAL</b></li>
+              <li><span>Data Modelling</span><b>SCHEMAS</b></li>
+              <li><span>API Integration</span><b>CONNECTED</b></li>
+            </ul>
+            <div class="module-meter"><span style="--level: 86%"></span></div>
+          </article>
+        </div>
+
+        <div class="capability-strip reveal-group" aria-label="Development principles">
+          <span>01 // ACCESSIBLE</span><span>02 // PERFORMANT</span><span>03 // MAINTAINABLE</span>
+        </div>
       </div>
-      <div class="about-grid">
-        <div class="terminal card3d">
-          <div class="terminal-bar">
-            <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
-            <span class="t-title">jaseem@dev: ~/profile</span>
+    </section>
+
+    <section class="work panel-section" id="work" data-scene="work">
+      <div class="section-shell section-shell--wide">
+        <header class="section-heading section-heading--row reveal-group">
+          <div>
+            <div class="section-kicker"><span>02</span> PROJECTS MATRIX</div>
+            <h2>SELECTED <em>WORK</em></h2>
           </div>
-          <div class="terminal-body">
-            <p><span class="prompt">$</span> whoami</p>
-            <p class="out">&gt; Jaseem Nizardeen</p>
-            <p><span class="prompt">$</span> cat role.txt</p>
-            <p class="out">&gt; Web Developer</p>
-            <p><span class="prompt">$</span> ls ./capabilities</p>
-            <p class="out">&gt; web-pages/  web-apps/  vba-applications/</p>
-            <p><span class="prompt">$</span> ./status --check</p>
-            <p class="out ok">&gt; AVAILABLE FOR PROJECTS ●</p>
-            <p><span class="prompt">$</span> <span class="blink">_</span></p>
+          <p>Digital systems designed at the intersection of interface, data, and automation.</p>
+        </header>
+
+        <div class="projects-grid">
+          <article class="project-card project-card--featured tilt-card reveal-card" tabindex="0">
+            <div class="project-card__head">
+              <span>CASE / 001</span><span class="project-status"><i></i> DEPLOYED</span>
+            </div>
+            <div class="project-visual project-visual--dashboard" aria-hidden="true">
+              <div class="visual-window">
+                <div class="visual-window__bar"><i></i><i></i><i></i><span>OPERATIONS / LIVE</span></div>
+                <div class="visual-dashboard">
+                  <aside><b></b><b></b><b></b><b></b></aside>
+                  <div class="visual-data">
+                    <div class="visual-data__metrics"><span></span><span></span><span></span></div>
+                    <svg viewBox="0 0 520 150" role="presentation"><path d="M0 128 C45 118,70 85,112 96 S180 123,217 72 S285 45,322 63 S390 96,430 43 S487 18,520 32" /><path class="chart-glow" d="M0 128 C45 118,70 85,112 96 S180 123,217 72 S285 45,322 63 S390 96,430 43 S487 18,520 32" /></svg>
+                  </div>
+                </div>
+              </div>
+              <span class="visual-coordinate">X.104 / Y.882</span>
+            </div>
+            <div class="project-card__body">
+              <div><h3>OpsCore Dashboard</h3><p>A responsive command centre for tracking operational data, surfacing live metrics, and reducing reporting friction.</p></div>
+              <ul><li>React</li><li>TypeScript</li><li>SQL</li></ul>
+            </div>
+            <span class="project-arrow"><i data-lucide="arrow-up-right"></i></span>
+          </article>
+
+          <article class="project-card tilt-card reveal-card" tabindex="0">
+            <div class="project-card__head"><span>CASE / 002</span><span class="project-status"><i></i> ACTIVE</span></div>
+            <div class="project-visual project-visual--flow" aria-hidden="true">
+              <div class="flow-node flow-node--a"><i data-lucide="file-spreadsheet"></i></div>
+              <div class="flow-node flow-node--b"><i data-lucide="braces"></i></div>
+              <div class="flow-node flow-node--c"><i data-lucide="send"></i></div>
+              <svg viewBox="0 0 400 170"><path d="M78 84 C140 22 189 143 253 83 S340 44 367 76" /></svg>
+              <span>TRIGGER_01</span><span>EXECUTE_02</span><span>OUTPUT_03</span>
+            </div>
+            <div class="project-card__body"><div><h3>SheetFlow Automator</h3><p>Google Workspace automation for scheduled reports, approvals, and reliable team notifications.</p></div><ul><li>Apps Script</li><li>JavaScript</li></ul></div>
+            <span class="project-arrow"><i data-lucide="arrow-up-right"></i></span>
+          </article>
+
+          <article class="project-card tilt-card reveal-card" tabindex="0">
+            <div class="project-card__head"><span>CASE / 003</span><span class="project-status project-status--magenta"><i></i> OPTIMIZED</span></div>
+            <div class="project-visual project-visual--data" aria-hidden="true">
+              <div class="data-orbit"><i></i><i></i><i></i><b>SQL</b></div>
+              <div class="data-lines"><span></span><span></span><span></span><span></span><span></span></div>
+              <small>QUERY VELOCITY / 08.42MS</small>
+            </div>
+            <div class="project-card__body"><div><h3>SignalGrid Data UI</h3><p>A searchable data interface turning complex records into fast, readable operational insight.</p></div><ul><li>SQL</li><li>JavaScript</li><li>CSS</li></ul></div>
+            <span class="project-arrow"><i data-lucide="arrow-up-right"></i></span>
+          </article>
+
+          <article class="project-card project-card--compact tilt-card reveal-card" tabindex="0">
+            <div class="project-card__head"><span>CASE / 004</span><span class="project-status"><i></i> STABLE</span></div>
+            <div class="compact-icon"><i data-lucide="bot"></i><span>MACRO<br />PILOT</span></div>
+            <div class="project-card__body"><div><h3>Office Macro Pilot</h3><p>VBA tools that validate records, generate documents, and give repetitive admin work an autopilot.</p></div><ul><li>VBA</li><li>Excel</li></ul></div>
+            <span class="project-arrow"><i data-lucide="arrow-up-right"></i></span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact panel-section" id="contact" data-scene="contact">
+      <div class="section-shell contact-layout">
+        <div class="contact-copy reveal-group">
+          <div class="section-kicker"><span>03</span> TERMINAL CONTACT</div>
+          <h2>LET'S BUILD<br />THE <em>NEXT</em><br />SYSTEM.</h2>
+          <p>Have a web product, data interface, or workflow that needs engineering? Open a channel and transmit the brief.</p>
+          <div class="availability"><i class="status-pulse"></i><span><b>CHANNEL OPEN</b><small>Typical response // within 24 hours</small></span></div>
+        </div>
+
+        <div class="contact-terminal reveal-card">
+          <div class="terminal-titlebar">
+            <div><i></i><i></i><i></i></div>
+            <span>contact://secure-transmission</span>
+            <b>TLS 1.3</b>
           </div>
-        </div>
-        <div class="about-text">
-          <h3>&lt;hello_world /&gt;</h3>
-          <p>I'm <strong>Jaseem Nizardeen</strong>, a web developer who turns ideas into
-          fast, interactive digital experiences. From sleek <em>web pages</em> and full
-          <em>web applications</em> to powerful <em>VBA automation tools</em>, I build
-          software that works — and looks good doing it.</p>
-          <p>I work across the stack: crafting UI with modern JavaScript frameworks,
-          wiring up data with SQL, and automating workflows with Google Apps Script
-          and VBA.</p>
-          <div class="stat-row">
-            <div class="stat card3d"><span class="stat-num" data-count="7">0</span><span class="stat-label">LANGUAGES &amp; TOOLS</span></div>
-            <div class="stat card3d"><span class="stat-num" data-count="3">0</span><span class="stat-label">SERVICE DOMAINS</span></div>
-            <div class="stat card3d"><span class="stat-num" data-count="100">0</span><span class="stat-label">% COMMITMENT</span></div>
+          <div class="terminal-log" aria-hidden="true">
+            <p><span>jaseem@portfolio:~$</span> init contact_protocol</p>
+            <p class="terminal-output">[OK] encrypted channel established</p>
+            <p class="terminal-output">[OK] awaiting visitor credentials...</p>
           </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- ============ SKILLS ============ -->
-    <section class="section" id="skills">
-      <div class="section-head">
-        <span class="sec-num">03</span>
-        <h2 class="sec-title glitch" data-text="SKILL.MATRIX">SKILL.MATRIX</h2>
-        <div class="sec-line"></div>
+          <form id="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+            <input type="hidden" name="form-name" value="contact" />
+            <p class="hidden-field"><label>Do not fill this out: <input name="bot-field" /></label></p>
+            <label class="terminal-field">
+              <span><b>01</b> IDENTIFY YOURSELF</span>
+              <span class="terminal-input"><i>name@visitor:~$</i><input type="text" name="name" autocomplete="name" placeholder="enter your name" required /></span>
+            </label>
+            <label class="terminal-field">
+              <span><b>02</b> RETURN FREQUENCY</span>
+              <span class="terminal-input"><i>email@visitor:~$</i><input type="email" name="email" autocomplete="email" placeholder="enter your email" required /></span>
+            </label>
+            <label class="terminal-field terminal-field--message">
+              <span><b>03</b> TRANSMISSION DATA</span>
+              <span class="terminal-input"><i>brief@visitor:~$</i><textarea name="message" rows="3" placeholder="tell me about the project" required></textarea></span>
+            </label>
+            <button class="transmit-button magnetic" type="submit">
+              <span>TRANSMIT MESSAGE</span><i data-lucide="send"></i><b>↵</b>
+            </button>
+            <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
       </div>
-      <div class="skills-grid">
-        <div class="skill card3d" data-tilt><div class="skill-icon">&lt;/&gt;</div><h4>HTML</h4><div class="bar"><span style="--w:95%"></span></div><span class="pct">95%</span></div>
-        <div class="skill card3d" data-tilt><div class="skill-icon">{ }</div><h4>CSS</h4><div class="bar"><span style="--w:92%"></span></div><span class="pct">92%</span></div>
-        <div class="skill card3d" data-tilt><div class="skill-icon">JS</div><h4>JavaScript</h4><div class="bar"><span style="--w:90%"></span></div><span class="pct">90%</span></div>
-        <div class="skill card3d" data-tilt><div class="skill-icon">⚛</div><h4>React</h4><div class="bar"><span style="--w:85%"></span></div><span class="pct">85%</span></div>
-        <div class="skill card3d" data-tilt><div class="skill-icon">TS</div><h4>TypeScript</h4><div class="bar"><span style="--w:82%"></span></div><span class="pct">82%</span></div>
-        <div class="skill card3d" data-tilt><div class="skill-icon">◈</div><h4>SQL</h4><div class="bar"><span style="--w:85%"></span></div><span class="pct">85%</span></div>
-        <div class="skill card3d" data-tilt><div class="skill-icon">GS</div><h4>Google Script</h4><div class="bar"><span style="--w:88%"></span></div><span class="pct">88%</span></div>
-        <div class="skill card3d" data-tilt><div class="skill-icon">▦</div><h4>VBA</h4><div class="bar"><span style="--w:90%"></span></div><span class="pct">90%</span></div>
-      </div>
-    </section>
 
-    <!-- ============ SERVICES ============ -->
-    <section class="section" id="services">
-      <div class="section-head">
-        <span class="sec-num">04</span>
-        <h2 class="sec-title glitch" data-text="SERVICES.EXE">SERVICES.EXE</h2>
-        <div class="sec-line"></div>
-      </div>
-      <div class="services-grid">
-        <div class="service card3d" data-tilt>
-          <div class="service-num">/01</div>
-          <div class="service-icon">🌐</div>
-          <h3>WEB PAGES</h3>
-          <p>Modern, responsive and animated websites — landing pages, portfolios and business sites built with HTML, CSS &amp; JavaScript.</p>
-          <div class="service-tags"><span>HTML</span><span>CSS</span><span>JS</span></div>
-        </div>
-        <div class="service card3d" data-tilt>
-          <div class="service-num">/02</div>
-          <div class="service-icon">⚡</div>
-          <h3>WEB APPS</h3>
-          <p>Full-featured interactive applications with React &amp; TypeScript, connected to SQL databases and Google Apps Script backends.</p>
-          <div class="service-tags"><span>React</span><span>TypeScript</span><span>SQL</span><span>GScript</span></div>
-        </div>
-        <div class="service card3d" data-tilt>
-          <div class="service-num">/03</div>
-          <div class="service-icon">🤖</div>
-          <h3>VBA APPLICATIONS</h3>
-          <p>Excel &amp; Office automation tools that save hours — custom dashboards, report generators, and data-processing macros.</p>
-          <div class="service-tags"><span>VBA</span><span>Excel</span><span>Automation</span></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ CONTACT ============ -->
-    <section class="section contact" id="contact">
-      <div class="section-head">
-        <span class="sec-num">05</span>
-        <h2 class="sec-title glitch" data-text="CONNECT.SYS">CONNECT.SYS</h2>
-        <div class="sec-line"></div>
-      </div>
-      <div class="contact-inner card3d">
-        <p class="contact-lead">// READY TO BUILD SOMETHING?</p>
-        <h3>Let's create your next<br/><span class="accent-text">web page · web app · automation</span></h3>
-        <div class="contact-actions">
-          <a class="btn btn-primary" href="mailto:jaseem.nizardeen@example.com">✉ SEND MESSAGE</a>
-          <a class="btn btn-ghost" href="#hero">▲ BACK TO TOP</a>
-        </div>
-        <div class="contact-meta">
-          <span>◉ COLOMBO, SRI LANKA</span>
-          <span>◉ OPEN FOR FREELANCE</span>
-          <span>◉ RESPONSE &lt; 24H</span>
-        </div>
-      </div>
-      <footer>
-        <span>© 2026 JASEEM NIZARDEEN — DESIGNED IN THE FUTURE</span>
+      <footer class="site-footer">
+        <a class="brand brand--footer" href="#home"><span class="brand__sigil">JN</span><span class="brand__copy"><b>JASEEM.N</b><small>WEB DEVELOPMENT</small></span></a>
+        <p>© 2026 JASEEM NIZARDEEN<br /><span>DESIGNED IN THE FUTURE // BUILT FOR NOW</span></p>
+        <a href="#home" class="back-top">BACK TO ORIGIN <i data-lucide="arrow-up"></i></a>
       </footer>
     </section>
-
   </main>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
   <script type="importmap">
-    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "topojson-client": "https://cdn.jsdelivr.net/npm/topojson-client@3/+esm"
+      }
+    }
   </script>
   <script type="module" src="main.js"></script>
 </body>
