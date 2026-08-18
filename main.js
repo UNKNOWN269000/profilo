@@ -773,40 +773,49 @@ function updateClock() {
 updateClock();
 window.setInterval(updateClock, 1000);
 
-/* Netlify-compatible terminal form */
+/* -------------------------------------------------------------------------- */
+/* Contact form — delivers every message to Jaseem's email                    */
+/* -------------------------------------------------------------------------- */
+const CONTACT_EMAIL = 'mohammedjaseem269@gmail.com';
+
 const contactForm = document.querySelector('#contact-form');
 const formStatus = document.querySelector('#form-status');
 const submitButton = contactForm.querySelector('button[type="submit"]');
-
 const submitLabel = submitButton.querySelector('span');
 
-contactForm.addEventListener('submit', async (event) => {
-  event.preventDefault();
-  submitButton.disabled = true;
-  formStatus.classList.remove('is-error');
-  formStatus.textContent = 'Sending your message...';
-  if (submitLabel) submitLabel.textContent = 'SENDING...';
+function buildMailtoUrl(name, email, message) {
+  const subject = name ? `Portfolio message from ${name}` : 'Portfolio message — new inquiry';
+  const body =
+    `Name: ${name}\n` +
+    `Email: ${email}\n\n` +
+    `Message:\n${message}\n\n` +
+    '—\nSent from the contact form on my portfolio website';
+  return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
 
-  try {
-    const formData = new FormData(contactForm);
-    const response = await fetch('/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams(formData).toString()
-    });
-    if (!response.ok) throw new Error(`Request returned ${response.status}`);
-    contactForm.reset();
-    formStatus.textContent = 'Thank you! Your message was sent — I will reply within 24 hours.';
-    if (submitLabel) submitLabel.textContent = 'MESSAGE SENT';
-    window.setTimeout(() => { if (submitLabel) submitLabel.textContent = 'SEND MESSAGE'; }, 4000);
-  } catch (error) {
-    console.warn('The message could not be sent.', error);
-    formStatus.classList.add('is-error');
-    formStatus.textContent = 'Sorry, that did not go through. Please try again or message me on WhatsApp.';
-    if (submitLabel) submitLabel.textContent = 'SEND MESSAGE';
-  } finally {
-    submitButton.disabled = false;
-  }
+contactForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+
+  const name = contactForm.elements.name.value.trim();
+  const email = contactForm.elements.email.value.trim();
+  const message = contactForm.elements.message.value.trim();
+  if (!name || !email || !message) return;
+
+  // Best-effort archive copy for the Netlify forms inbox (when hosted on Netlify).
+  fetch('/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams(new FormData(contactForm)).toString()
+  }).catch(() => {});
+
+  // Open the visitor's email app with the message pre-filled and addressed to
+  // Jaseem — they tap SEND there and it lands directly in the inbox above.
+  window.location.href = buildMailtoUrl(name, email, message);
+
+  formStatus.classList.remove('is-error');
+  formStatus.textContent = `Your email app is open — tap SEND there to deliver your message to ${CONTACT_EMAIL}.`;
+  if (submitLabel) submitLabel.textContent = 'OPENED IN EMAIL APP';
+  window.setTimeout(() => { if (submitLabel) submitLabel.textContent = 'SEND MESSAGE'; }, 6000);
 });
 
 /* -------------------------------------------------------------------------- */
