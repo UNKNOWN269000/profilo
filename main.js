@@ -729,7 +729,7 @@ window.addEventListener('keydown', (event) => { if (event.key === 'Escape') clos
 
 /* Role typewriter */
 const roleElement = document.querySelector('#typed-role');
-const roles = ['WEB DEVELOPER', 'REACT ENGINEER', 'AUTOMATION BUILDER', 'DATA INTERFACE DESIGNER'];
+const roles = ['WEB DEVELOPER', 'WEBSITE BUILDER', 'AUTOMATION EXPERT', 'PROBLEM SOLVER'];
 let roleIndex = 0;
 let roleCharacter = roles[0].length;
 let deleting = true;
@@ -778,11 +778,14 @@ const contactForm = document.querySelector('#contact-form');
 const formStatus = document.querySelector('#form-status');
 const submitButton = contactForm.querySelector('button[type="submit"]');
 
+const submitLabel = submitButton.querySelector('span');
+
 contactForm.addEventListener('submit', async (event) => {
   event.preventDefault();
   submitButton.disabled = true;
   formStatus.classList.remove('is-error');
-  formStatus.textContent = 'ENCRYPTING // TRANSMITTING...';
+  formStatus.textContent = 'Sending your message...';
+  if (submitLabel) submitLabel.textContent = 'SENDING...';
 
   try {
     const formData = new FormData(contactForm);
@@ -791,14 +794,59 @@ contactForm.addEventListener('submit', async (event) => {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams(formData).toString()
     });
-    if (!response.ok) throw new Error(`Transmission returned ${response.status}`);
+    if (!response.ok) throw new Error(`Request returned ${response.status}`);
     contactForm.reset();
-    formStatus.textContent = 'TRANSMISSION RECEIVED // CHANNEL CLOSED';
+    formStatus.textContent = 'Thank you! Your message was sent — I will reply within 24 hours.';
+    if (submitLabel) submitLabel.textContent = 'MESSAGE SENT';
+    window.setTimeout(() => { if (submitLabel) submitLabel.textContent = 'SEND MESSAGE'; }, 4000);
   } catch (error) {
-    console.warn('Contact transmission failed.', error);
+    console.warn('The message could not be sent.', error);
     formStatus.classList.add('is-error');
-    formStatus.textContent = 'UPLINK FAILED // PLEASE RETRY IN A MOMENT';
+    formStatus.textContent = 'Sorry, that did not go through. Please try again or message me on WhatsApp.';
+    if (submitLabel) submitLabel.textContent = 'SEND MESSAGE';
   } finally {
     submitButton.disabled = false;
   }
 });
+
+/* -------------------------------------------------------------------------- */
+/* WhatsApp quick contact                                                     */
+/* -------------------------------------------------------------------------- */
+const WHATSAPP_NUMBER = '94759825269';
+const WHATSAPP_DEFAULT_TEXT = "Hi Jaseem, I saw your portfolio and I'd like to talk about a project.";
+
+function whatsappLink(message = WHATSAPP_DEFAULT_TEXT) {
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+}
+
+// Keep every WhatsApp entry point pointing at the same number and message.
+document.querySelectorAll('a[href*="wa.me"]').forEach((link) => {
+  link.href = whatsappLink();
+  link.target = '_blank';
+  link.rel = 'noopener';
+});
+
+// If the visitor already typed a brief, carry it into WhatsApp so nothing is retyped.
+const formAltLink = document.querySelector('.form-alt a');
+if (formAltLink) {
+  formAltLink.addEventListener('click', () => {
+    const name = contactForm.elements.name?.value.trim();
+    const brief = contactForm.elements.message?.value.trim();
+    if (!name && !brief) return;
+    const intro = name ? `Hi Jaseem, this is ${name}.` : 'Hi Jaseem,';
+    formAltLink.href = whatsappLink(brief ? `${intro} ${brief}` : `${intro} I'd like to talk about a project.`);
+  });
+}
+
+// Tuck the floating button away while the contact section (which has its own
+// buttons) is on screen, so it never covers the form or the footer.
+const whatsappFab = document.querySelector('#whatsapp-fab');
+const contactSection = document.querySelector('#contact');
+if (whatsappFab && contactSection && 'IntersectionObserver' in window) {
+  const fabObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      whatsappFab.classList.toggle('is-hidden', entry.isIntersecting && entry.intersectionRatio > 0.35);
+    });
+  }, { threshold: [0, 0.35, 0.6] });
+  fabObserver.observe(contactSection);
+}
