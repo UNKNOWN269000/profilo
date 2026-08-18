@@ -1,5 +1,5 @@
 /* =====================================================
-   JASEEM NIZARDEEN — HI-TECH 3D SCROLL PROFILE
+   JASEEM NIZARDEEN — HI-TECH 3D WORLD SCROLL PROFILE
    Three.js scene + GSAP ScrollTrigger animations
 ===================================================== */
 import * as THREE from 'three';
@@ -43,24 +43,106 @@ const purpleLight = new THREE.PointLight(0x7b2bff, 45, 40);
 purpleLight.position.set(0, 6, -6);
 scene.add(purpleLight);
 
-/* ---- Central hero object: wireframe icosahedron + inner core ---- */
+/* ---- Central hero object: hi-tech digital EARTH ("WORLD") ---- */
 const heroGroup = new THREE.Group();
+const WORLD_R = 2.2;
 
-const icoGeo = new THREE.IcosahedronGeometry(2.2, 1);
-const icoWire = new THREE.Mesh(
-  icoGeo,
-  new THREE.MeshBasicMaterial({ color: 0x00f0ff, wireframe: true, transparent: true, opacity: 0.5 })
-);
-heroGroup.add(icoWire);
+/* Inner spinning group so the whole globe (shell + dots + nodes + arcs)
+   rotates as one, while the rings & satellites orbit independently. */
+const worldGroup = new THREE.Group();
+heroGroup.add(worldGroup);
 
-const core = new THREE.Mesh(
-  new THREE.IcosahedronGeometry(1.15, 2),
+/* Base sphere — dark metal core that occludes the far side */
+const globeCore = new THREE.Mesh(
+  new THREE.SphereGeometry(WORLD_R, 64, 64),
   new THREE.MeshStandardMaterial({
-    color: 0x0a1428, metalness: 0.9, roughness: 0.15,
-    emissive: 0x7b2bff, emissiveIntensity: 0.6
+    color: 0x06121f, metalness: 0.85, roughness: 0.3,
+    emissive: 0x0a1e3a, emissiveIntensity: 0.55
   })
 );
-heroGroup.add(core);
+worldGroup.add(globeCore);
+
+/* Latitude / longitude wireframe shell */
+const wireGlobe = new THREE.Mesh(
+  new THREE.SphereGeometry(WORLD_R * 1.002, 36, 22),
+  new THREE.MeshBasicMaterial({
+    color: 0x00f0ff, wireframe: true, transparent: true, opacity: 0.12
+  })
+);
+worldGroup.add(wireGlobe);
+
+/* Dotted "data" field evenly scattered over the surface (Fibonacci sphere) */
+const DOT_COUNT = 1200;
+const dotPos = new Float32Array(DOT_COUNT * 3);
+const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5));
+for (let i = 0; i < DOT_COUNT; i++) {
+  const y = 1 - (i / (DOT_COUNT - 1)) * 2;
+  const r = Math.sqrt(1 - y * y);
+  const theta = GOLDEN_ANGLE * i;
+  dotPos[i * 3] = Math.cos(theta) * r * (WORLD_R * 1.004);
+  dotPos[i * 3 + 1] = y * (WORLD_R * 1.004);
+  dotPos[i * 3 + 2] = Math.sin(theta) * r * (WORLD_R * 1.004);
+}
+const dotGeo = new THREE.BufferGeometry();
+dotGeo.setAttribute('position', new THREE.BufferAttribute(dotPos, 3));
+const dots = new THREE.Points(dotGeo, new THREE.PointsMaterial({
+  color: 0x00f0ff, size: 0.03, transparent: true, opacity: 0.65, sizeAttenuation: true
+}));
+worldGroup.add(dots);
+
+/* Major glowing "network nodes" on the surface */
+const NODE_COUNT = 26;
+const nodes = [];
+for (let i = 0; i < NODE_COUNT; i++) {
+  const v = new THREE.Vector3(
+    (Math.random() - 0.5), (Math.random() - 0.5), (Math.random() - 0.5)
+  ).normalize();
+  const node = new THREE.Mesh(
+    new THREE.SphereGeometry(0.05, 10, 10),
+    new THREE.MeshBasicMaterial({
+      color: i % 3 === 0 ? 0xff2bd6 : 0x00f0ff,
+      transparent: true, opacity: 0.95
+    })
+  );
+  node.position.copy(v).multiplyScalar(WORLD_R * 1.006);
+  node.userData = { seed: i };
+  nodes.push(node);
+  worldGroup.add(node);
+}
+
+/* Data-link arcs connecting random nodes (lifted above the surface) */
+const arcs = [];
+const arcColors = [0x00f0ff, 0xff2bd6, 0x7b2bff, 0x00ff9d];
+for (let i = 0; i < 24; i++) {
+  const a = nodes[Math.floor(Math.random() * nodes.length)];
+  const b = nodes[Math.floor(Math.random() * nodes.length)];
+  if (a === b) continue;
+  const pa = a.position.clone();
+  const pb = b.position.clone();
+  const mid = pa.clone().add(pb).multiplyScalar(0.5).normalize().multiplyScalar(WORLD_R * 1.6);
+  const curve = new THREE.QuadraticBezierCurve3(pa, mid, pb);
+  const arc = new THREE.Mesh(
+    new THREE.TubeGeometry(curve, 48, 0.008, 6, false),
+    new THREE.MeshBasicMaterial({
+      color: arcColors[i % arcColors.length],
+      transparent: true, opacity: 0.5,
+      blending: THREE.AdditiveBlending, depthWrite: false
+    })
+  );
+  arc.userData = { phase: Math.random() * Math.PI * 2, speed: 0.8 + Math.random() * 1.4 };
+  arcs.push(arc);
+  worldGroup.add(arc);
+}
+
+/* Atmosphere rim glow */
+const atmosphere = new THREE.Mesh(
+  new THREE.SphereGeometry(WORLD_R * 1.16, 48, 48),
+  new THREE.MeshBasicMaterial({
+    color: 0x00f0ff, transparent: true, opacity: 0.08,
+    side: THREE.BackSide, blending: THREE.AdditiveBlending, depthWrite: false
+  })
+);
+worldGroup.add(atmosphere);
 
 /* Orbiting rings */
 const rings = [];
@@ -211,11 +293,19 @@ function tick() {
   heroGroup.rotation.y = t * 0.25 + p * Math.PI * 2;
   heroGroup.rotation.x = Math.sin(t * 0.3) * 0.15 + p * 0.8;
 
-  icoWire.rotation.y = -t * 0.35;
-  core.rotation.y = t * 0.5;
-  core.rotation.z = t * 0.3;
-  const pulse = 1 + Math.sin(t * 2.2) * 0.06;
-  core.scale.setScalar(pulse);
+  // Spin the whole digital earth
+  worldGroup.rotation.y = t * 0.12;
+  wireGlobe.rotation.y = -t * 0.05;   // subtle counter-rotation parallax
+  wireGlobe.rotation.x = t * 0.02;
+  atmosphere.scale.setScalar(1 + Math.sin(t * 1.6) * 0.03);
+
+  // Pulse the data arcs + nodes
+  arcs.forEach(a => {
+    a.material.opacity = 0.3 + Math.sin(t * a.userData.speed + a.userData.phase) * 0.28;
+  });
+  nodes.forEach((n, i) => {
+    n.scale.setScalar(1 + Math.sin(t * 2 + i) * 0.35);
+  });
 
   rings.forEach((r, i) => { r.rotation.z = t * (0.15 + i * 0.07); });
 
