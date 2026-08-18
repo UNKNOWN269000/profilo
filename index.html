@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jaseem Nizardeen — Web Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- 3D WebGL canvas (fixed behind everything) -->
+  <canvas id="webgl"></canvas>
+
+  <!-- Scanline / grid overlays -->
+  <div class="overlay-grid"></div>
+  <div class="overlay-scanlines"></div>
+  <div class="overlay-vignette"></div>
+
+  <!-- Loader -->
+  <div id="loader">
+    <div class="loader-inner">
+      <div class="loader-ring"></div>
+      <div class="loader-text" data-text="INITIALIZING">INITIALIZING</div>
+      <div class="loader-bar"><span id="loader-progress"></span></div>
+    </div>
+  </div>
+
+  <!-- HUD corners -->
+  <div class="hud hud-tl"><span class="hud-dot"></span> SYS.ONLINE</div>
+  <div class="hud hud-tr" id="hud-clock">00:00:00</div>
+  <div class="hud hud-bl" id="hud-scroll">SCROLL 000%</div>
+  <div class="hud hud-br">V.2026.8 // LK-COLOMBO</div>
+
+  <!-- Nav -->
+  <nav id="nav">
+    <div class="nav-logo glitch" data-text="JN//DEV">JN//DEV</div>
+    <ul class="nav-links">
+      <li><a href="#hero" class="nav-link">01.HOME</a></li>
+      <li><a href="#about" class="nav-link">02.ABOUT</a></li>
+      <li><a href="#skills" class="nav-link">03.SKILLS</a></li>
+      <li><a href="#services" class="nav-link">04.SERVICES</a></li>
+      <li><a href="#contact" class="nav-link">05.CONTACT</a></li>
+    </ul>
+  </nav>
+
+  <!-- Scroll progress rail -->
+  <div class="progress-rail"><div id="progress-fill"></div></div>
+
+  <main id="content">
+
+    <!-- ============ HERO ============ -->
+    <section class="section hero" id="hero">
+      <div class="hero-inner">
+        <div class="hero-tag reveal">// PERSONAL PROFILE SYSTEM v2.0</div>
+        <h1 class="hero-name">
+          <span class="line"><span class="glitch big" data-text="JASEEM">JASEEM</span></span>
+          <span class="line"><span class="glitch big accent" data-text="NIZARDEEN">NIZARDEEN</span></span>
+        </h1>
+        <div class="hero-role reveal">
+          <span class="bracket">[</span>
+          <span id="typed"></span><span class="cursor">▌</span>
+          <span class="bracket">]</span>
+        </div>
+        <p class="hero-sub reveal">Building the web — pages, apps &amp; automation.<br/>Scroll to enter the system.</p>
+        <div class="hero-cta reveal">
+          <a href="#about" class="btn btn-primary">ENTER SYSTEM ▸</a>
+          <a href="#contact" class="btn btn-ghost">CONTACT ME</a>
+        </div>
+      </div>
+      <div class="scroll-hint">
+        <div class="mouse"><div class="wheel"></div></div>
+        <span>SCROLL</span>
+      </div>
+    </section>
+
+    <!-- ============ ABOUT ============ -->
+    <section class="section" id="about">
+      <div class="section-head">
+        <span class="sec-num">02</span>
+        <h2 class="sec-title glitch" data-text="ABOUT.ME">ABOUT.ME</h2>
+        <div class="sec-line"></div>
+      </div>
+      <div class="about-grid">
+        <div class="terminal card3d">
+          <div class="terminal-bar">
+            <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+            <span class="t-title">jaseem@dev: ~/profile</span>
+          </div>
+          <div class="terminal-body">
+            <p><span class="prompt">$</span> whoami</p>
+            <p class="out">&gt; Jaseem Nizardeen</p>
+            <p><span class="prompt">$</span> cat role.txt</p>
+            <p class="out">&gt; Web Developer</p>
+            <p><span class="prompt">$</span> ls ./capabilities</p>
+            <p class="out">&gt; web-pages/  web-apps/  vba-applications/</p>
+            <p><span class="prompt">$</span> ./status --check</p>
+            <p class="out ok">&gt; AVAILABLE FOR PROJECTS ●</p>
+            <p><span class="prompt">$</span> <span class="blink">_</span></p>
+          </div>
+        </div>
+        <div class="about-text">
+          <h3>&lt;hello_world /&gt;</h3>
+          <p>I'm <strong>Jaseem Nizardeen</strong>, a web developer who turns ideas into
+          fast, interactive digital experiences. From sleek <em>web pages</em> and full
+          <em>web applications</em> to powerful <em>VBA automation tools</em>, I build
+          software that works — and looks good doing it.</p>
+          <p>I work across the stack: crafting UI with modern JavaScript frameworks,
+          wiring up data with SQL, and automating workflows with Google Apps Script
+          and VBA.</p>
+          <div class="stat-row">
+            <div class="stat card3d"><span class="stat-num" data-count="7">0</span><span class="stat-label">LANGUAGES &amp; TOOLS</span></div>
+            <div class="stat card3d"><span class="stat-num" data-count="3">0</span><span class="stat-label">SERVICE DOMAINS</span></div>
+            <div class="stat card3d"><span class="stat-num" data-count="100">0</span><span class="stat-label">% COMMITMENT</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SKILLS ============ -->
+    <section class="section" id="skills">
+      <div class="section-head">
+        <span class="sec-num">03</span>
+        <h2 class="sec-title glitch" data-text="SKILL.MATRIX">SKILL.MATRIX</h2>
+        <div class="sec-line"></div>
+      </div>
+      <div class="skills-grid">
+        <div class="skill card3d" data-tilt><div class="skill-icon">&lt;/&gt;</div><h4>HTML</h4><div class="bar"><span style="--w:95%"></span></div><span class="pct">95%</span></div>
+        <div class="skill card3d" data-tilt><div class="skill-icon">{ }</div><h4>CSS</h4><div class="bar"><span style="--w:92%"></span></div><span class="pct">92%</span></div>
+        <div class="skill card3d" data-tilt><div class="skill-icon">JS</div><h4>JavaScript</h4><div class="bar"><span style="--w:90%"></span></div><span class="pct">90%</span></div>
+        <div class="skill card3d" data-tilt><div class="skill-icon">⚛</div><h4>React</h4><div class="bar"><span style="--w:85%"></span></div><span class="pct">85%</span></div>
+        <div class="skill card3d" data-tilt><div class="skill-icon">TS</div><h4>TypeScript</h4><div class="bar"><span style="--w:82%"></span></div><span class="pct">82%</span></div>
+        <div class="skill card3d" data-tilt><div class="skill-icon">◈</div><h4>SQL</h4><div class="bar"><span style="--w:85%"></span></div><span class="pct">85%</span></div>
+        <div class="skill card3d" data-tilt><div class="skill-icon">GS</div><h4>Google Script</h4><div class="bar"><span style="--w:88%"></span></div><span class="pct">88%</span></div>
+        <div class="skill card3d" data-tilt><div class="skill-icon">▦</div><h4>VBA</h4><div class="bar"><span style="--w:90%"></span></div><span class="pct">90%</span></div>
+      </div>
+    </section>
+
+    <!-- ============ SERVICES ============ -->
+    <section class="section" id="services">
+      <div class="section-head">
+        <span class="sec-num">04</span>
+        <h2 class="sec-title glitch" data-text="SERVICES.EXE">SERVICES.EXE</h2>
+        <div class="sec-line"></div>
+      </div>
+      <div class="services-grid">
+        <div class="service card3d" data-tilt>
+          <div class="service-num">/01</div>
+          <div class="service-icon">🌐</div>
+          <h3>WEB PAGES</h3>
+          <p>Modern, responsive and animated websites — landing pages, portfolios and business sites built with HTML, CSS &amp; JavaScript.</p>
+          <div class="service-tags"><span>HTML</span><span>CSS</span><span>JS</span></div>
+        </div>
+        <div class="service card3d" data-tilt>
+          <div class="service-num">/02</div>
+          <div class="service-icon">⚡</div>
+          <h3>WEB APPS</h3>
+          <p>Full-featured interactive applications with React &amp; TypeScript, connected to SQL databases and Google Apps Script backends.</p>
+          <div class="service-tags"><span>React</span><span>TypeScript</span><span>SQL</span><span>GScript</span></div>
+        </div>
+        <div class="service card3d" data-tilt>
+          <div class="service-num">/03</div>
+          <div class="service-icon">🤖</div>
+          <h3>VBA APPLICATIONS</h3>
+          <p>Excel &amp; Office automation tools that save hours — custom dashboards, report generators, and data-processing macros.</p>
+          <div class="service-tags"><span>VBA</span><span>Excel</span><span>Automation</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section class="section contact" id="contact">
+      <div class="section-head">
+        <span class="sec-num">05</span>
+        <h2 class="sec-title glitch" data-text="CONNECT.SYS">CONNECT.SYS</h2>
+        <div class="sec-line"></div>
+      </div>
+      <div class="contact-inner card3d">
+        <p class="contact-lead">// READY TO BUILD SOMETHING?</p>
+        <h3>Let's create your next<br/><span class="accent-text">web page · web app · automation</span></h3>
+        <div class="contact-actions">
+          <a class="btn btn-primary" href="mailto:jaseem.nizardeen@example.com">✉ SEND MESSAGE</a>
+          <a class="btn btn-ghost" href="#hero">▲ BACK TO TOP</a>
+        </div>
+        <div class="contact-meta">
+          <span>◉ COLOMBO, SRI LANKA</span>
+          <span>◉ OPEN FOR FREELANCE</span>
+          <span>◉ RESPONSE &lt; 24H</span>
+        </div>
+      </div>
+      <footer>
+        <span>© 2026 JASEEM NIZARDEEN — DESIGNED IN THE FUTURE</span>
+      </footer>
+    </section>
+
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script type="importmap">
+    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+  </script>
+  <script type="module" src="main.js"></script>
+</body>
+</html>
