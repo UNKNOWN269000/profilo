@@ -1,6 +1,6 @@
-# Jaseem Nizardeen // Portfolio OS
+# HAAVK Nizardeen // Portfolio OS
 
-A full-page cyberpunk portfolio for web developer **Jaseem Nizardeen**. The experience combines a live Three.js globe, GSAP scroll choreography, glass HUD modules, cursor telemetry, interactive project cards, and direct WhatsApp, email, and phone contact options.
+A full-page cyberpunk portfolio for web developer **HAAVK Nizardeen**. The experience combines a live Three.js globe, GSAP scroll choreography, glass HUD modules, cursor telemetry, interactive project cards, and direct WhatsApp, email, and phone contact options.
 
 ## Features
 
@@ -31,6 +31,7 @@ Then open `http://localhost:4173`.
 ## Project files
 
 - `index.html` — semantic structure, portfolio copy, and HUD interface
+- `src/logo.jpg` — HAAVK brand logo used in the header and footer
 - `style.css` — responsive visual system and component styles
 - `main.js` — Three.js scene, map projection, GSAP motion, and interactions
 - `netlify.toml` — static deployment, fallback routing, and security headers

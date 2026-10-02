@@ -1,4 +1,4 @@
-/* Jaseem Nizardeen — Holographic portfolio interface */
+/* HAAVK Nizardeen — Holographic portfolio interface */
 :root {
   --space: #05050d;
   --space-soft: #080914;
@@ -132,7 +132,7 @@ ul { list-style: none; }
 }
 .boot-screen.is-complete { opacity: 0; visibility: hidden; }
 .boot-mark { position: relative; display: grid; place-items: center; width: 82px; height: 82px; margin-bottom: 26px; }
-.boot-mark__core { font: 800 19px var(--display); letter-spacing: 2px; text-shadow: 0 0 16px var(--cyan); }
+.boot-mark__core { font: 800 11px var(--display); letter-spacing: .06em; text-shadow: 0 0 16px var(--cyan); }
 .boot-mark__orbit { position: absolute; inset: 0; border: 1px solid rgba(0, 243, 255, .24); border-top-color: var(--cyan); border-bottom-color: var(--magenta); border-radius: 50%; animation: spin 1.1s linear infinite; }
 .boot-mark__orbit::after { content: ""; position: absolute; inset: 9px; border: 1px dashed rgba(0, 243, 255, .35); border-radius: 50%; animation: spin 2.6s linear infinite reverse; }
 .boot-screen > p { font: 500 10px var(--mono); letter-spacing: .27em; }
@@ -193,11 +193,8 @@ ul { list-style: none; }
   transition: height 260ms ease, background 260ms ease, border-color 260ms ease;
 }
 .site-header.is-scrolled { height: 68px; border-color: var(--line); background: rgba(5, 5, 13, .76); backdrop-filter: blur(18px); }
-.brand { display: inline-flex; align-items: center; gap: 11px; width: max-content; }
-.brand__sigil { display: grid; place-items: center; width: 38px; height: 38px; color: var(--space); background: var(--cyan); clip-path: polygon(25% 0, 100% 0, 100% 75%, 75% 100%, 0 100%, 0 25%); font: 800 12px var(--display); box-shadow: 0 0 22px rgba(0, 243, 255, .35); }
-.brand__copy { display: flex; flex-direction: column; gap: 1px; }
-.brand__copy b { font: 700 11px var(--display); letter-spacing: .13em; }
-.brand__copy small { color: var(--muted); font: 500 7px var(--mono); letter-spacing: .12em; }
+.brand { display: inline-flex; align-items: center; width: max-content; }
+.brand__logo { display: block; width: clamp(132px, 13vw, 170px); height: auto; object-fit: contain; }
 .desktop-nav { display: flex; align-items: center; gap: clamp(20px, 2.7vw, 48px); }
 .desktop-nav a { position: relative; padding: 10px 0; color: #8b99a9; font: 500 11px var(--mono); letter-spacing: .09em; transition: color 180ms ease; }
 .desktop-nav a span { margin-right: 6px; color: #5c6b7b; font-size: 9px; }
@@ -497,7 +494,7 @@ main { position: relative; z-index: 10; }
 .availability b { color: var(--green); font: 600 10px var(--mono); letter-spacing: .14em; }
 .availability small { margin-top: 4px; color: #8492a1; font: 500 10px var(--mono); }
 .site-footer { position: absolute; z-index: 3; left: clamp(30px, 7.5vw, 140px); right: clamp(30px, 7.5vw, 140px); bottom: 29px; display: flex; align-items: end; justify-content: space-between; padding-top: 24px; border-top: 1px solid var(--line); }
-.brand--footer .brand__sigil { width: 30px; height: 30px; font-size: 9px; }
+.brand--footer .brand__logo { width: 148px; }
 .site-footer > p { color: #5c6c7b; text-align: center; font: 500 8.5px/1.8 var(--mono); letter-spacing: .12em; }
 .site-footer > p span { color: #344551; }
 .back-top { display: flex; align-items: center; gap: 8px; color: #738592; font: 500 8.5px var(--mono); letter-spacing: .12em; }
@@ -530,7 +527,6 @@ main { position: relative; z-index: 10; }
   .header-whatsapp svg { width: 18px; height: 18px; }
   .contact-methods { max-width: 100%; }
   .site-header { padding: 0 22px; }
-  .brand__copy small { display: none; }
   .panel-section { padding-left: 22px; padding-right: 22px; }
   .hero { align-items: end; padding-bottom: 118px; }
   .hero::before { width: 100%; background: linear-gradient(180deg, rgba(5, 5, 13, .04) 10%, rgba(5, 5, 13, .48) 45%, rgba(5, 5, 13, .98) 78%); }
@@ -566,7 +562,6 @@ main { position: relative; z-index: 10; }
   .contact-method { padding: 13px 14px; }
   .contact-method__copy b { font-size: 12.5px; }
   .contact-method__copy small { font-size: 9.5px; }
-  .brand__sigil { width: 34px; height: 34px; }
   .hero { min-height: 100svh; padding-bottom: 90px; }
   .hero__title { font-size: clamp(34px, 11.8vw, 58px); }
   .hero__role { margin-top: 16px; min-height: 24px; font-size: 11px; letter-spacing: .12em; }
