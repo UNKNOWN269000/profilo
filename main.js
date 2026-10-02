@@ -768,7 +768,7 @@ window.setInterval(updateClock, 1000);
 /* WhatsApp quick contact                                                     */
 /* -------------------------------------------------------------------------- */
 const WHATSAPP_NUMBER = '94759825269';
-const WHATSAPP_DEFAULT_TEXT = "Hi HAAVK, I saw your portfolio and I'd like to talk about a project.";
+const WHATSAPP_DEFAULT_TEXT = "Hi Jaseem, I saw your portfolio and I'd like to talk about a project.";
 
 function whatsappLink(message = WHATSAPP_DEFAULT_TEXT) {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
