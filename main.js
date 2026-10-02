@@ -621,15 +621,6 @@ if (gsap && ScrollTrigger) {
     });
   });
 
-  gsap.from('.contact-terminal', {
-    scrollTrigger: { trigger: '.contact-terminal', start: 'top 84%', once: true },
-    opacity: 0,
-    x: prefersReducedMotion ? 0 : 45,
-    rotateY: prefersReducedMotion ? 0 : -7,
-    duration: prefersReducedMotion ? 0 : 0.95,
-    ease: 'power3.out'
-  });
-
   gsap.from('.capability-strip', {
     scrollTrigger: { trigger: '.capability-strip', start: 'top 92%', once: true },
     opacity: 0,
@@ -774,51 +765,6 @@ updateClock();
 window.setInterval(updateClock, 1000);
 
 /* -------------------------------------------------------------------------- */
-/* Contact form — delivers every message to Jaseem's email                    */
-/* -------------------------------------------------------------------------- */
-const CONTACT_EMAIL = 'mohammedjaseem269@gmail.com';
-
-const contactForm = document.querySelector('#contact-form');
-const formStatus = document.querySelector('#form-status');
-const submitButton = contactForm.querySelector('button[type="submit"]');
-const submitLabel = submitButton.querySelector('span');
-
-function buildMailtoUrl(name, email, message) {
-  const subject = name ? `Portfolio message from ${name}` : 'Portfolio message — new inquiry';
-  const body =
-    `Name: ${name}\n` +
-    `Email: ${email}\n\n` +
-    `Message:\n${message}\n\n` +
-    '—\nSent from the contact form on my portfolio website';
-  return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-}
-
-contactForm.addEventListener('submit', (event) => {
-  event.preventDefault();
-
-  const name = contactForm.elements.name.value.trim();
-  const email = contactForm.elements.email.value.trim();
-  const message = contactForm.elements.message.value.trim();
-  if (!name || !email || !message) return;
-
-  // Best-effort archive copy for the Netlify forms inbox (when hosted on Netlify).
-  fetch('/', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams(new FormData(contactForm)).toString()
-  }).catch(() => {});
-
-  // Open the visitor's email app with the message pre-filled and addressed to
-  // Jaseem — they tap SEND there and it lands directly in the inbox above.
-  window.location.href = buildMailtoUrl(name, email, message);
-
-  formStatus.classList.remove('is-error');
-  formStatus.textContent = `Your email app is open — tap SEND there to deliver your message to ${CONTACT_EMAIL}.`;
-  if (submitLabel) submitLabel.textContent = 'OPENED IN EMAIL APP';
-  window.setTimeout(() => { if (submitLabel) submitLabel.textContent = 'SEND MESSAGE'; }, 6000);
-});
-
-/* -------------------------------------------------------------------------- */
 /* WhatsApp quick contact                                                     */
 /* -------------------------------------------------------------------------- */
 const WHATSAPP_NUMBER = '94759825269';
@@ -835,20 +781,7 @@ document.querySelectorAll('a[href*="wa.me"]').forEach((link) => {
   link.rel = 'noopener';
 });
 
-// If the visitor already typed a brief, carry it into WhatsApp so nothing is retyped.
-const formAltLink = document.querySelector('.form-alt a');
-if (formAltLink) {
-  formAltLink.addEventListener('click', () => {
-    const name = contactForm.elements.name?.value.trim();
-    const brief = contactForm.elements.message?.value.trim();
-    if (!name && !brief) return;
-    const intro = name ? `Hi Jaseem, this is ${name}.` : 'Hi Jaseem,';
-    formAltLink.href = whatsappLink(brief ? `${intro} ${brief}` : `${intro} I'd like to talk about a project.`);
-  });
-}
-
-// Tuck the floating button away while the contact section (which has its own
-// buttons) is on screen, so it never covers the form or the footer.
+// Tuck the floating button away while the contact methods and footer are on screen.
 const whatsappFab = document.querySelector('#whatsapp-fab');
 const contactSection = document.querySelector('#contact');
 if (whatsappFab && contactSection && 'IntersectionObserver' in window) {
