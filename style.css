@@ -604,7 +604,17 @@ main { position: relative; z-index: 10; }
   .whatsapp-fab__pulse { display: none; }
 }
 
-/* Temporary load-time swarm reveal; never intercepts navigation or clicks. */
-.swarm-intro { position: fixed; inset: 0; z-index: 999; width: 100%; height: 100%; pointer-events: none; transition: opacity 400ms ease; }
+/* Organic flocking intro: an ambient layer behind the interface, never a click target. */
+.swarm-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 8;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: .94;
+  mix-blend-mode: screen;
+  transition: opacity 520ms ease;
+}
 .swarm-intro--done { opacity: 0; }
 @media (prefers-reduced-motion: reduce) { .swarm-intro { display: none; } }
